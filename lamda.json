@@ -1,0 +1,26 @@
+// Load the AWS SDK
+const aws = require('aws-sdk');
+
+
+const s3 = new aws.S3({version:"latest", location:"us-east-1"});
+
+var srcBucket = "s3.console.aws.amazon.com/s3/buckets/1000genomes";
+var destBucket = "s3.console.aws.amazon.com/s3/buckets/astrobot2/ar";
+var sourceObject ="20131219.populations.tsv";
+
+
+//Main function
+exports.handler = (event, context, callback) => {
+s3.copyObject({ 
+    CopySource: srcBucket + '/' + sourceObject,
+    Bucket: destBucket,
+    Key: sourceObject
+    }, function(copyErr, copyData){
+       if (copyErr) {
+            console.log("Error: " + copyErr);
+         } else {
+            console.log('Copied OK');
+         } 
+    });
+  callback(null, 'All done!');
+};
